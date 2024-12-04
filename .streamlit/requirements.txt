@@ -3,4 +3,3 @@ pandas
 numpy
 sqlalchemy
 st-gsheets-connection
-streamlit_gsheets
