@@ -397,7 +397,14 @@ with st.container(border=True) :
 
 with st.container(border=True):
     st.header ("Suggested Actions")
-    # db_style_code_display
+    db_style_code_display
+    db_style_code_display_unit=db_style_code_display.groupby(['vendor_style_code','channel','brand','gender','article_type'],as_index=False).agg({'order_count':'sum','return_count':'sum','cost':'sum','p/l':'sum','customer_paid_amt':'sum'})
+    db_style_code_display_unit['net_order']=db_style_code_display_unit['order_count']-db_style_code_display_unit['return_count']
+    db_style_code_display_unit['asp']=db_style_code_display_unit['customer_paid_amt']/db_style_code_display_unit['net_order']
+    db_style_code_display_unit['cogs']=db_style_code_display_unit['cost']/db_style_code_display_unit['net_order']
+    db_style_code_display_unit['codb']=(db_style_code_display_unit['customer_paid_amt']-db_style_code_display_unit['cost']-db_style_code_display_unit['p/l'])/db_style_code_display_unit['net_order']
+    db_style_code_display_unit.drop(['order_count','return_count','cost','p/l','customer_paid_amt','net_order'],axis=1,inplace=True)
+    db_style_code_display_unit['p/l']=db_style_code_display_unit['asp']-db_style_code_display_unit['codb']-db_style_code_display_unit['cogs']
     db_style_code_actions=db_style_code_display.groupby(['vendor_style_code','channel','brand','gender','article_type'],as_index=False).agg({'order_created_date':'min','order_count':'sum','return_count':'sum','cost':'sum','p/l':'sum'})
     db_style_code_actions['return %']=db_style_code_actions['return_count']/db_style_code_actions['order_count']
     db_style_code_actions['roi']=db_style_code_actions['p/l']/db_style_code_actions['cost']
@@ -468,6 +475,8 @@ with st.container(border=True):
                 
                 
                 db_style_code_actions_tab
+                db_style_code_display_unit
+
                 with st.container(border=True):
                     subcolm1,subcolm2,subcol3=st.columns([1,3,1])    
                     with subcolm1:
