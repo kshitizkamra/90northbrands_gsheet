@@ -288,7 +288,7 @@ for i in range(tab_len):
 
         with st.container(border=True):
             tab1,tab2,tab3,tab4,tab5=st.tabs(['Category Contribution','Brand Contribution','Gender Contribution','State Distribution','Size Contribution'])
-
+            count=0
 
 
 
@@ -301,7 +301,8 @@ for i in range(tab_len):
 
                 fig=px.pie(db_sales_category,values='final_amount',names='article_type',title=None)
                 # fig = go.Figure(data=[go.Pie(labels=db_sales_category['article_type'], values=db_sales_category['final_amount'])])
-                st.plotly_chart(fig,use_container_width=True)        
+                st.plotly_chart(fig,use_container_width=True,key=count)
+                count=count+1
 
             with tab2 :
             
