@@ -310,8 +310,8 @@ for i in range(tab_len):
                 db_sales_brand=db_sales_brand.groupby(['brand']).agg({'final_amount':'sum'})
                 db_sales_brand.reset_index(inplace=True)
 
-                fig=px.pie(db_sales_brand,values='final_amount',names='brand',title=None)
-                st.plotly_chart(fig,use_container_width=True,key="brand")    
+                fig1=px.pie(db_sales_brand,values='final_amount',names='brand',title=None)
+                st.plotly_chart(fig1,use_container_width=True,key="brand")    
 
 
             with tab3 :
@@ -321,8 +321,8 @@ for i in range(tab_len):
                 db_sales_brand=db_sales_brand.groupby(['gender']).agg({'final_amount':'sum'})
                 db_sales_brand.reset_index(inplace=True)
 
-                fig=px.pie(db_sales_brand,values='final_amount',names='gender',title=None)
-                st.plotly_chart(fig,use_container_width=True,key="gender")          
+                fig2=px.pie(db_sales_brand,values='final_amount',names='gender',title=None)
+                st.plotly_chart(fig2,use_container_width=True,key="gender")          
 
 
                 
@@ -342,6 +342,6 @@ for i in range(tab_len):
                 db_sales_brand=db_sales_brand.groupby(['size']).agg({'final_amount':'sum'})
                 db_sales_brand.reset_index(inplace=True)
 
-                fig=px.pie(db_sales_brand,values='final_amount',names='size',title=None)
-                st.plotly_chart(fig,use_container_width=True,key="size")          
+                fig3=px.pie(db_sales_brand,values='final_amount',names='size',title=None)
+                st.plotly_chart(fig3,use_container_width=True,key="size")          
 
