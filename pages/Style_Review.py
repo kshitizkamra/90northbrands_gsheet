@@ -616,3 +616,49 @@ with st.container(border=True):
 
     st.plotly_chart(fig,key=count)
     count=count+1
+
+
+with st.container(border=True):
+    st.header ("Unit Economics")
+        
+    db_style_code_funnel_final=db_style_code_funnel[db_style_code_funnel['vendor_style_code']==db_style_code_for_sequence.loc[st.session_state['page_number'],'vendor_style_code']]
+    db_style_code_funnel_final.reset_index(inplace=True)
+    db_style_code_funnel_final['net_order']=db_style_code_funnel_final['order_count']-db_style_code_funnel_final['return_count']
+    db_style_code_funnel_final['taxes']=db_style_code_funnel_final['tcs_amount']+db_style_code_funnel_final['tds_amount']
+    db_style_code_funnel_final['settlement']=db_style_code_funnel_final['customer_paid_amt']-db_style_code_funnel_final['platform_fees']-db_style_code_funnel_final['taxes']-db_style_code_funnel_final['total_logistics']
+    db_style_code_funnel_final=db_style_code_funnel_final.groupby(['channel'],as_index=False).agg({'customer_paid_amt':'sum','platform_fees':'sum','taxes':'sum','total_logistics':'sum','settlement':'sum','cost':'sum','net_order':'sum'})
+    db_style_code_funnel_final['p/l']=db_style_code_funnel_final['settlement']-db_style_code_funnel_final['cost']
+    
+
+
+    funnel_channel_list=db_style_code_funnel_final['channel'].unique().tolist()
+    funnel_channel_len=len(funnel_channel_list)
+    db_style_code_funnel_final_funnel=pd.DataFrame()
+    for i in range(funnel_channel_len):
+        db_style_code_funnel_final_1=db_style_code_funnel_final[db_style_code_funnel_final['channel']==funnel_channel_list[i] ]
+        db_style_code_funnel_final_1.drop(['channel'],inplace=True,axis=1)
+        
+        db_style_code_funnel_final_1_T=db_style_code_funnel_final_1.T
+        db_style_code_funnel_final_1_T.reset_index(inplace=True)
+        db_style_code_funnel_final_1_T.rename(columns = {'index':'metric',0:'value'},inplace=True)
+        db_style_code_funnel_final_1_T['channel']=funnel_channel_list[i]
+        db_style_code_funnel_final_funnel=pd.concat([db_style_code_funnel_final_funnel, db_style_code_funnel_final_1_T], ignore_index=True, sort=False)
+
+    db_style_code_funnel_final_funnel['value']=round(db_style_code_funnel_final_funnel['value'],0)
+   
+    
+    db_style_code_funnel_final_funnel_unit=db_style_code_funnel_final_funnel
+    db_style_code_funnel_final_funnel_unit['value_unit']=db_style_code_funnel_final_funnel_unit['value']/db_style_code_funnel_final_funnel_unit['value'][6]
+    # db_style_code_funnel_final_funnel_unit
+    fig = go.Figure(go.Waterfall(
+    name = "CODB", orientation = "h", measure = ["relative", "relative", "relative", "relative", "total", "relative",
+                                              "total"],
+    y = ["Customer_Paid_Amount", "Platform Fee", "Taxes", "Logistics", "Settlement", "COGS", "P/L"],
+    x = [db_style_code_funnel_final_funnel_unit['value_unit'][0],-db_style_code_funnel_final_funnel_unit['value_unit'][1],-db_style_code_funnel_final_funnel_unit['value_unit'][2],-db_style_code_funnel_final_funnel_unit['value_unit'][3],None,-db_style_code_funnel_final_funnel_unit['value_unit'][5],-db_style_code_funnel_final_funnel_unit['value_unit'][6], None],
+    connector = {"mode":"between", "line":{"width":4, "color":"rgb(0, 0, 0)", "dash":"solid"}}
+))
+
+    fig.update_layout(title = "Profit and loss statement")
+
+    st.plotly_chart(fig,key=count)
+    count=count+1
