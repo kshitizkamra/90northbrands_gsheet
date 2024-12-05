@@ -23,7 +23,7 @@ db_data=conn.read(worksheet="final_data")
 db_sales_data=conn.read(worksheet="final_sales")
 db_sales_data_for_side_filter=conn.read(worksheet="final_sales")
 db_latlong=conn.read(worksheet="latlong")
-
+count=0
 st.markdown("""
     <style>
             .block-container {
@@ -288,7 +288,6 @@ for i in range(tab_len):
 
         with st.container(border=True):
             tab1,tab2,tab3,tab4,tab5=st.tabs(['Category Contribution','Brand Contribution','Gender Contribution','State Distribution','Size Contribution'])
-            count=0
 
 
 
