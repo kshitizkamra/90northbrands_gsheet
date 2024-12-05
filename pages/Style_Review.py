@@ -397,7 +397,7 @@ with st.container(border=True) :
 
 with st.container(border=True):
     st.header ("Suggested Actions")
-    db_style_code_display
+    
     db_style_code_display_unit=db_style_code_display.groupby(['vendor_style_code','channel','brand','gender','article_type'],as_index=False).agg({'order_count':'sum','return_count':'sum','cost':'sum','p/l':'sum','customer_paid_amt':'sum'})
     db_style_code_display_unit['net_order']=db_style_code_display_unit['order_count']-db_style_code_display_unit['return_count']
     db_style_code_display_unit['asp']=db_style_code_display_unit['customer_paid_amt']/db_style_code_display_unit['net_order']
