@@ -31,7 +31,7 @@ db_latlong=conn.read(worksheet="latlong")
 db_sales_data_for_side_filter['order_created_date']=pd.to_datetime(db_sales_data_for_side_filter['order_created_date'], dayfirst=True, format='mixed')
 db_data['order_created_date']=pd.to_datetime(db_data['order_created_date'], dayfirst=True, format='mixed')
 db_sales_data['order_created_date']=pd.to_datetime(db_sales_data['order_created_date'], dayfirst=True, format='mixed')
-
+count=0
 st.markdown("""
     <style>
             .block-container {
@@ -344,7 +344,8 @@ with st.container(border=True) :
                     fig.add_scatter(x=db_style_code_display_tab['month'], y=db_style_code_display_tab['return_count'],name="Returns")
                     fig.add_scatter(x=db_style_code_display_tab['month'], y=db_style_code_display_tab['net_order_count'],name="Net Sales")
                     with st.container(height=355):
-                        st.plotly_chart(fig, theme="streamlit")
+                        st.plotly_chart(fig, theme="streamlit",key=count)
+                        count=count+1
 
                 with tab2:
                     db_style_code_display_tab=db_style_code_display.groupby(['month'], as_index=False,sort=False).agg({'customer_paid_amt':'sum','settlement':'sum','cost':'sum','p/l':'sum'})
@@ -356,7 +357,8 @@ with st.container(border=True) :
                     fig.add_scatter(x=db_style_code_display_tab['month'], y=db_style_code_display_tab['cost'],name="COGS")
                     fig.add_scatter(x=db_style_code_display_tab['month'], y=db_style_code_display_tab['p/l'],name="P/L")
                     with st.container(height=355):
-                        st.plotly_chart(fig, theme="streamlit")
+                        st.plotly_chart(fig, theme="streamlit",key=count)
+                        count=count+1
 
                 with tab3:
                     db_style_code_display_tab=db_style_code_display.groupby(['latitude','longitude','state'], as_index=False,sort=False).agg({'order_count':'sum','return_count':'sum'})
@@ -376,7 +378,8 @@ with st.container(border=True) :
                     
                     fig=px.pie(db_style_code_display_tab,values='net_order_count',names='size',title=None,height=320)
                     with st.container(height=355):
-                        st.plotly_chart(fig,use_container_width=True)  
+                        st.plotly_chart(fig,use_container_width=True,key=count)
+                        count=count+1  
 
                 if i==0:
                     with tab5:
@@ -386,7 +389,8 @@ with st.container(border=True) :
                     
                         fig=px.pie(db_style_code_display_tab,values='net_order_count',names='channel',title=None,height=320)
                         with st.container(height=355):
-                            st.plotly_chart(fig,use_container_width=True)
+                            st.plotly_chart(fig,use_container_width=True,key=count)
+                            count=count+1
                 else:
                     ""
 
@@ -556,4 +560,5 @@ with st.container(border=True):
 
     db_style_code_funnel_final_funnel['value']=round(db_style_code_funnel_final_funnel['value'],0)
     fig = px.funnel(db_style_code_funnel_final_funnel, x='value', y='metric', color='channel')
-    st.plotly_chart(fig, theme="streamlit")
+    st.plotly_chart(fig, theme="streamlit",key=count)
+    count=count+1
