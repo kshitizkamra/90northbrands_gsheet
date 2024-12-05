@@ -301,7 +301,7 @@ for i in range(tab_len):
 
                 fig=px.pie(db_sales_category,values='final_amount',names='article_type',title=None)
                 # fig = go.Figure(data=[go.Pie(labels=db_sales_category['article_type'], values=db_sales_category['final_amount'])])
-                st.plotly_chart(fig,use_container_width=True,key="category1")        
+                st.plotly_chart(fig,use_container_width=True)        
 
             with tab2 :
             
