@@ -517,6 +517,7 @@ with st.container(border=True):
                         db_action_items_manual=conn1.read(worksheet="action_items_manual",ttl=2)
                         
                         db_action_items_manual_1=db_style_code_actions_tab.drop(['order_created_date','order_count','return_count','cost','p/l'],axis=1)
+                        db_action_items_manual_1.rename(columns={'return %': 'returns'},inplace=True)
                         style_code=db_style_code_actions_tab['vendor_style_code'][0]
                         db_action_items_manual_1['ros_action']=ros_action
                         db_action_items_manual_1['roi_action']=roi_action
