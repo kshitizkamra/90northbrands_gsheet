@@ -291,45 +291,45 @@ with st.container(border=True) :
             st.success("Uploaded Successfully") 
     
 
-with st.container(border=True) :
-   st.subheader("Recommendations")
-   col1, col2 = st.columns([2,1],gap="small")
-   with col1:
-    uploaded_recommendation = st.file_uploader(
-    "Upload recommendation File ", accept_multiple_files=True
-    )
+# with st.container(border=True) :
+#    st.subheader("Recommendations")
+#    col1, col2 = st.columns([2,1],gap="small")
+#    with col1:
+#     uploaded_recommendation = st.file_uploader(
+#     "Upload recommendation File ", accept_multiple_files=True
+#     )
 
-   with col2 :
+#    with col2 :
     
     
-    st.write("")
-    st.write("")
-    subcol1,subcol2,subcol3=st.columns([2,3,2],gap="small")
-    with subcol2 :
-        if st.button('Upload',key="recommendation_btn"):
-            recommendation_bar = st.progress(0, text="Uploading")
-            st.cache_data.clear()
-            total_recommendation_files=len(uploaded_recommendation)
-            y=0
+#     st.write("")
+#     st.write("")
+#     subcol1,subcol2,subcol3=st.columns([2,3,2],gap="small")
+#     with subcol2 :
+#         if st.button('Upload',key="recommendation_btn"):
+#             recommendation_bar = st.progress(0, text="Uploading")
+#             st.cache_data.clear()
+#             total_recommendation_files=len(uploaded_recommendation)
+#             y=0
             
-            for filename in uploaded_recommendation:
-                y=y+1
-                recommendation_bar.progress(y/(total_recommendation_files+10), text="Uploading")
-                df = pd.read_csv(filename, index_col=None, header=0)
-                df.columns = [x.lower() for x in df.columns]
-                try:
-                        df1=df[['ros','roi','return %','selling_price','pla','replenishment','remarks']].copy()
-                except:
-                            st.write(str(filename.name)+" not uploaded, wrong format")
+#             for filename in uploaded_recommendation:
+#                 y=y+1
+#                 recommendation_bar.progress(y/(total_recommendation_files+10), text="Uploading")
+#                 df = pd.read_csv(filename, index_col=None, header=0)
+#                 df.columns = [x.lower() for x in df.columns]
+#                 try:
+#                         df1=df[['ros','roi','return %','selling_price','pla','replenishment','remarks']].copy()
+#                 except:
+#                             st.write(str(filename.name)+" not uploaded, wrong format")
                       
-                db_recommendation = pd.concat([db_recommendation, df1], ignore_index=True, sort=False)
+#                 db_recommendation = pd.concat([db_recommendation, df1], ignore_index=True, sort=False)
                    
            
                
-            db_recommendation=db_recommendation.drop_duplicates()
-            recommendation_bar.progress(total_recommendation_files/(total_recommendation_files+10), text="Updating database")
-            conn.update(worksheet="recommendation_upload",data=db_recommendation) 
-            recommendation_bar.empty()
-            st.success("Uploaded Successfully")
+#             db_recommendation=db_recommendation.drop_duplicates()
+#             recommendation_bar.progress(total_recommendation_files/(total_recommendation_files+10), text="Updating database")
+#             conn.update(worksheet="recommendation_upload",data=db_recommendation) 
+#             recommendation_bar.empty()
+#             st.success("Uploaded Successfully")
     
     
