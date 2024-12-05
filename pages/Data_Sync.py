@@ -79,9 +79,9 @@ container=st.container(border=True)
 
 with st.container(border=True) :
     st.subheader("Sync All Data")
-
+    
     if st.button('Sync Now',key="sync_btn"):
-     
+        st.cache_data.clear()
         settlement_bar = st.progress(0, text="Syncing Settlements")
         db_settlement_upload=conn.read(worksheet="settlement_upload")
         
@@ -162,7 +162,7 @@ with st.container(border=True) :
      
 
 
-
+        st.cache_data.clear()
         final_bar=st.progress(0,text="Syncing all data")
         db_sales=conn.read(worksheet="sales")
         db_settlement=conn.read(worksheet="settlement")
