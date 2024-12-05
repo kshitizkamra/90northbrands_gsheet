@@ -229,7 +229,7 @@ with tab2:
 
         if len(group_by)>0:
                 
-            db_data_display=db_data_final.groupby(group_by,sort=False).agg({'order_count':'sum','return_count':'sum','customer_paid_amt':'sum','platform_fees':'sum','tcs_amount':'sum','tds_amount':'sum','shipping_fee':'sum','pick_and_pack_fee':'sum','fixed_fee':'sum','payment_gateway_fee':'sum','total_tax_on_logistics':'sum','total_logistics':'sum','settlement':'sum','cost':'sum'})
+            db_data_display=db_data_final.groupby(group_by,sort=False).agg({'order_count':'sum','return_count':'sum','customer_paid_amt':'sum','platform_fees':'sum','tcs_amount':'sum','tds_amount':'sum','shipping_fee':'sum','pick_and_pack_fee':'sum','fixed_fee':'sum','payment_gateway_fee':'sum','total_tax_on_logistics':'sum','total_logistics':'sum','total_actual_settlement':'sum','settlement':'sum','cost':'sum'})
             db_data_display['commision']=db_data_display['platform_fees']
             db_data_display['taxes']=db_data_display['tcs_amount']+db_data_display['tds_amount']
             db_data_display['p/l']=db_data_display['settlement']-db_data_display['cost']
@@ -242,6 +242,7 @@ with tab2:
             db_data_display['settlement/unit']=db_data_display['settlement']/(db_data_display['order_count']-db_data_display['return_count'])
             db_data_display['cost/unit']=db_data_display['cost']/(db_data_display['order_count']-db_data_display['return_count'])
             db_data_display['p&l/unit']=db_data_display['p/l']/(db_data_display['order_count']-db_data_display['return_count'])
+            
             db_data_display= db_data_display.iloc[:,[0,1,2,14,15,11,12,13,16,17,18,19,20,21,22,23,24,25,3,4,5,6,7,8,9,10]]  
             st.divider()
             
