@@ -428,12 +428,12 @@ with st.container(border=True):
     
     
 
-    def action_update(stmt) :
-        with engine.connect() as conn:
-                            transaction = conn.begin()
-                            result1=conn.execute(stmt)
-                            transaction.commit()
-                            return result1.rowcount
+    # def action_update(stmt) :
+    #     with engine.connect() as conn:
+    #                         transaction = conn.begin()
+    #                         result1=conn.execute(stmt)
+    #                         transaction.commit()
+    #                         return result1.rowcount
     
     for i in range(tab_len):
         with tab_suggestion[i]:
@@ -542,6 +542,38 @@ with st.container(border=True):
                         # conn1.query("Insert into action_items_manual (vendor_style_code,selling_price,pla,replenishment,date_updated,brand,gender,article_type,ros,returns,roi,ros_action,roi_action,return_action,channel,remarks) values  ('"+style_code+"','"+action_sp+"','"+action_pla+"','"+action_replenishment+"',now(),'"+brand+"','"+gender+"','"+article_type+"',"+str(ros)+","+str(returns)+","+str(roi)+",'"+ros_action+"','"+roi_action+"','"+return_action+"','"+channel+"','"+action_remarks+"')")
                         
 
+# with st.container(border=True):
+#     st.header ("CODB")
+        
+#     db_style_code_funnel_final=db_style_code_funnel[db_style_code_funnel['vendor_style_code']==db_style_code_for_sequence.loc[st.session_state['page_number'],'vendor_style_code']]
+#     db_style_code_funnel_final.reset_index(inplace=True)
+#     # db_style_code_funnel_final
+#     db_style_code_funnel_final['taxes']=db_style_code_funnel_final['tcs_amount']+db_style_code_funnel_final['tds_amount']
+#     db_style_code_funnel_final['settlement']=db_style_code_funnel_final['customer_paid_amt']-db_style_code_funnel_final['platform_fees']-db_style_code_funnel_final['taxes']-db_style_code_funnel_final['total_logistics']
+#     db_style_code_funnel_final=db_style_code_funnel_final.groupby(['channel'],as_index=False).agg({'customer_paid_amt':'sum','platform_fees':'sum','taxes':'sum','total_logistics':'sum','settlement':'sum','cost':'sum'})
+#     db_style_code_funnel_final['p/l']=db_style_code_funnel_final['settlement']-db_style_code_funnel_final['cost']
+
+
+
+#     funnel_channel_list=db_style_code_funnel_final['channel'].unique().tolist()
+#     funnel_channel_len=len(funnel_channel_list)
+#     db_style_code_funnel_final_funnel=pd.DataFrame()
+#     for i in range(funnel_channel_len):
+#         db_style_code_funnel_final_1=db_style_code_funnel_final[db_style_code_funnel_final['channel']==funnel_channel_list[i] ]
+#         db_style_code_funnel_final_1.drop(['channel'],inplace=True,axis=1)
+        
+#         db_style_code_funnel_final_1_T=db_style_code_funnel_final_1.T
+#         db_style_code_funnel_final_1_T.reset_index(inplace=True)
+#         db_style_code_funnel_final_1_T.rename(columns = {'index':'metric',0:'value'},inplace=True)
+#         db_style_code_funnel_final_1_T['channel']=funnel_channel_list[i]
+#         db_style_code_funnel_final_funnel=pd.concat([db_style_code_funnel_final_funnel, db_style_code_funnel_final_1_T], ignore_index=True, sort=False)
+
+#     db_style_code_funnel_final_funnel['value']=round(db_style_code_funnel_final_funnel['value'],0)
+#     fig = px.funnel(db_style_code_funnel_final_funnel, x='value', y='metric', color='channel')
+#     st.plotly_chart(fig, theme="streamlit",key=count)
+#     count=count+1
+
+
 with st.container(border=True):
     st.header ("CODB")
         
@@ -569,6 +601,18 @@ with st.container(border=True):
         db_style_code_funnel_final_funnel=pd.concat([db_style_code_funnel_final_funnel, db_style_code_funnel_final_1_T], ignore_index=True, sort=False)
 
     db_style_code_funnel_final_funnel['value']=round(db_style_code_funnel_final_funnel['value'],0)
-    fig = px.funnel(db_style_code_funnel_final_funnel, x='value', y='metric', color='channel')
-    st.plotly_chart(fig, theme="streamlit",key=count)
+   
+
+    
+    fig = go.Figure(go.Waterfall(
+    name = "CODB", orientation = "h", measure = ["relative", "relative", "relative", "relative", "total", "relative",
+                                              "total"],
+    y = ["Customer_Paid_Amount", "Platform Fee", "Taxes", "Logistics", "Settlement", "COGS", "P/L"],
+    x = [db_style_code_funnel_final_funnel['value'][0],-db_style_code_funnel_final_funnel['value'][1],-db_style_code_funnel_final_funnel['value'][2],-db_style_code_funnel_final_funnel['value'][3],None,-db_style_code_funnel_final_funnel['value'][5],-db_style_code_funnel_final_funnel['value'][6], None],
+    connector = {"mode":"between", "line":{"width":4, "color":"rgb(0, 0, 0)", "dash":"solid"}}
+))
+
+    fig.update_layout(title = "Profit and loss statement")
+
+    st.plotly_chart(fig,key=count)
     count=count+1
