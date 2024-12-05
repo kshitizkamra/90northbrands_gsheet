@@ -311,7 +311,8 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig1=px.pie(db_sales_brand,values='final_amount',names='brand',title=None)
-                st.plotly_chart(fig1,use_container_width=True,key="brand")    
+                st.plotly_chart(fig1,use_container_width=True,key=count)
+                count=count+1
 
 
             with tab3 :
@@ -322,7 +323,8 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig2=px.pie(db_sales_brand,values='final_amount',names='gender',title=None)
-                st.plotly_chart(fig2,use_container_width=True,key="gender")          
+                st.plotly_chart(fig2,use_container_width=True,key=count)
+                count=count+1
 
 
                 
@@ -343,5 +345,6 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig3=px.pie(db_sales_brand,values='final_amount',names='size',title=None)
-                st.plotly_chart(fig3,use_container_width=True,key="size")          
+                st.plotly_chart(fig3,use_container_width=True,key=count)
+                count=count+1
 
