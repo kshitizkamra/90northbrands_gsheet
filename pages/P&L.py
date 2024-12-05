@@ -30,7 +30,7 @@ db_sales_data_for_side_filter['order_created_date']=pd.to_datetime(db_sales_data
 db_data['order_created_date']=pd.to_datetime(db_data['order_created_date'], dayfirst=True, format='mixed')
 db_sales_data['order_created_date']=pd.to_datetime(db_sales_data['order_created_date'], dayfirst=True, format='mixed')
 
-
+count=0
 st.markdown("""
     <style>
             .block-container {
@@ -436,7 +436,8 @@ for i in range(tab_len):
             fig.add_scatter(x=db_data_monthly['month'], y=db_data_monthly['settlement'],name="Settlement")
             fig.add_scatter(x=db_data_monthly['month'], y=db_data_monthly['cost'],name="COGS")
             fig.add_scatter(x=db_data_monthly['month'], y=db_data_monthly['P/L'],name="P/L")
-            st.plotly_chart(fig, theme="streamlit")
+            st.plotly_chart(fig, theme="streamlit", key=count)
+            count=count+1
 
             #    fig = px.line(df, x="x", y="y", title="Sorted Input") 
             #    st.plotly_chart(fig, theme="streamlit")
