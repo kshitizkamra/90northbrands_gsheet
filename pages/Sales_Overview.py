@@ -301,7 +301,7 @@ for i in range(tab_len):
 
                 fig=px.pie(db_sales_category,values='final_amount',names='article_type',title=None)
                 # fig = go.Figure(data=[go.Pie(labels=db_sales_category['article_type'], values=db_sales_category['final_amount'])])
-                st.plotly_chart(fig,use_container_width=True)        
+                st.plotly_chart(fig,use_container_width=True,key="category")        
 
             with tab2 :
             
@@ -311,7 +311,7 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig=px.pie(db_sales_brand,values='final_amount',names='brand',title=None)
-                st.plotly_chart(fig,use_container_width=True)    
+                st.plotly_chart(fig,use_container_width=True,key="brand")    
 
 
             with tab3 :
@@ -322,7 +322,7 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig=px.pie(db_sales_brand,values='final_amount',names='gender',title=None)
-                st.plotly_chart(fig,use_container_width=True)          
+                st.plotly_chart(fig,use_container_width=True,key="gender")          
 
 
                 
@@ -343,5 +343,5 @@ for i in range(tab_len):
                 db_sales_brand.reset_index(inplace=True)
 
                 fig=px.pie(db_sales_brand,values='final_amount',names='size',title=None)
-                st.plotly_chart(fig,use_container_width=True)          
+                st.plotly_chart(fig,use_container_width=True,key="size")          
 
