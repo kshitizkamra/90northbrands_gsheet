@@ -120,9 +120,10 @@ with st.container(border=True) :
         sales_bar = st.progress(0, text="Syncing Sales")
         db_sales_upload=conn.read(worksheet="sales_upload")
         
-        db_sales=conn.read(worksheet="sales")
-       
-        sales_bar.progress(1/4, text="Reading new sales")
+       try:
+            db_settlement=conn.read(worksheet="settlement")
+        except:
+            db_settlement=pd.DataFrame()
         
         if len(db_sales_upload)>0:
             db_sales_upload.drop_duplicates(subset="order_release_id",inplace=True,keep='first')
