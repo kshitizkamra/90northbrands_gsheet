@@ -87,9 +87,10 @@ with st.container(border=True) :
         
         db_settlement_upload.drop_duplicates(inplace=True)
         settlement_bar.progress(1/4, text="Syncing Settlements- Reading Upload data")
-        db_settlement=conn.read(worksheet="settlement")
-        
-        db_settlement=pd.DataFrame()
+        try:
+            db_settlement=conn.read(worksheet="settlement")
+        except:
+            db_settlement=pd.DataFrame()
         if len(db_settlement_upload)>0:
             settlement_bar.progress(1/2, text="Syncing Settlements - Reading Settlement table")
             db_settlement_upload.fillna(0,inplace=True)
@@ -120,10 +121,9 @@ with st.container(border=True) :
         sales_bar = st.progress(0, text="Syncing Sales")
         db_sales_upload=conn.read(worksheet="sales_upload")
         
-       try:
-            db_settlement=conn.read(worksheet="settlement")
-        except:
-            db_settlement=pd.DataFrame()
+        db_sales=conn.read(worksheet="sales")
+       
+        sales_bar.progress(1/4, text="Reading new sales")
         
         if len(db_sales_upload)>0:
             db_sales_upload.drop_duplicates(subset="order_release_id",inplace=True,keep='first')
