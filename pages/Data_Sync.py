@@ -87,10 +87,9 @@ with st.container(border=True) :
         
         db_settlement_upload.drop_duplicates(inplace=True)
         settlement_bar.progress(1/4, text="Syncing Settlements- Reading Upload data")
-        try:
-            db_settlement=conn.read(worksheet="settlement")
-        except:
-            db_settlement=pd.DataFrame()
+        db_settlement=conn.read(worksheet="settlement")
+        
+        db_settlement=pd.DataFrame()
         if len(db_settlement_upload)>0:
             settlement_bar.progress(1/2, text="Syncing Settlements - Reading Settlement table")
             db_settlement_upload.fillna(0,inplace=True)
@@ -182,6 +181,9 @@ with st.container(border=True) :
         db_sales_final['seller_id']=db_sales_final['seller_id'].astype(str)
         final_bar.progress(2/4,text="Final Magic ")
 
+        db_data.drop(['order_status','fabric'],axis=1,inplace=True)
+        db_sales_final.drop(['fabric'],axis=1,inplace=True)
+
         conn.update(worksheet="final_data",data=db_data)
         conn.update(worksheet="final_sales",data=db_sales_final)
         
@@ -270,5 +272,4 @@ with st.container(border=True) :
             
 
         final_bar.progress(4/4,text="All syncing done - Happy Analysing")
-
 
